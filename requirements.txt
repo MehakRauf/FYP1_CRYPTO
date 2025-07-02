@@ -5,4 +5,4 @@ requests==2.31.0
 matplotlib==3.9.2
 tensorflow==2.13.0
 joblib==1.3.2
-ta
+ta==0.11.0
