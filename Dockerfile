@@ -1,22 +1,20 @@
-FROM python:3.10-slim
+FROM python:3.10
 
+# Set working directory
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+# Copy and install dependencies
+COPY requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy app files
+# Copy rest of the project
 COPY . .
 
-# Install Python dependencies
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+# Make sure .streamlit folder is writable
+RUN mkdir -p /app/.streamlit
 
-# Expose Streamlit port
-EXPOSE 7860
+# Optional: disable usage stats
+ENV STREAMLIT_BROWSER_GATHERUSAGESTATS=false
 
 # Run Streamlit app
 CMD ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0.0"]
